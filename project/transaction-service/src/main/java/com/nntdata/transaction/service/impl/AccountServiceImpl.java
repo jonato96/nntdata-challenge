@@ -25,7 +25,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
 
     @Override
-    public AccountResponseDto save(AccountDto requestAccount) throws GeneralException {
+    public AccountResponseDto save(AccountDto requestAccount) {
         ClientResponseDto clientForAccount = customerClient.findById(requestAccount.getClientId());
         if ( accountRepository.existsByAccountNumber(requestAccount.getAccountNumber()) )
             throw new GeneralException("Account number is not valid.");
@@ -44,14 +44,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void delete(Long id) throws GeneralException {
+    public void delete(Long id) {
         validateExistsAndIsActive(id);
         accountRepository.inactivateAccount(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public AccountResponseDto findById(Long id) throws GeneralException {
+    public AccountResponseDto findById(Long id) {
         Account accountFind = accountRepository.findById(id).orElseThrow( () -> new GeneralException("Account not found with id: " + id) );
         ClientResponseDto clientResponse = customerClient.findById(accountFind.getClientId());
         AccountResponseDto accountResponse = accountMapper.toResponseDto(accountFind);
@@ -61,14 +61,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AccountResponseDto> findAll() throws GeneralException {
+    public List<AccountResponseDto> findAll() {
         List<Account> accounts = accountRepository.findAll();
         if (accounts.isEmpty()) throw new GeneralException("Accounts not found");
         return accountMapper.toResponseDtoList(accounts);
     }
 
     @Override
-    public Account validateAccount(Long id) throws GeneralException {
+    public Account validateAccount(Long id) {
         validateExistsAndIsActive(id);
         return accountRepository.findById(id).orElse(null);
     }
@@ -78,7 +78,7 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findByClientId(clientId);
     }
 
-    private void validateExistsAndIsActive(Long id) throws GeneralException {
+    private void validateExistsAndIsActive(Long id) {
         boolean result = accountRepository.existsByIdAndStatusTrue(id);
         if (!result) throw new GeneralException("Account not found or is already inactive.");
     }

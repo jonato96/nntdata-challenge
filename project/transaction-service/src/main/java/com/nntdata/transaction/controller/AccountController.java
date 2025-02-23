@@ -2,7 +2,6 @@ package com.nntdata.transaction.controller;
 
 import com.nntdata.transaction.dto.AccountDto;
 import com.nntdata.transaction.dto.AccountResponseDto;
-import com.nntdata.transaction.exception.GeneralException;
 import com.nntdata.transaction.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,22 +24,22 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping
-    public ResponseEntity<List<AccountResponseDto>> findAll() throws GeneralException {
+    public ResponseEntity<List<AccountResponseDto>> findAll() {
         return ResponseEntity.ok(accountService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountResponseDto> findById(@PathVariable("id") Long id) throws GeneralException {
+    public ResponseEntity<AccountResponseDto> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(accountService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<AccountResponseDto> create(@RequestBody AccountDto accountDto) throws GeneralException {
+    public ResponseEntity<AccountResponseDto> create(@RequestBody AccountDto accountDto) {
         return ResponseEntity.ok(accountService.save(accountDto));
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deactivate(@RequestParam("id") Long id) throws GeneralException {
+    public ResponseEntity<String> deactivate(@RequestParam("id") Long id) {
         accountService.delete(id);
         return ResponseEntity.ok("Account with id: " + id + " has been inactivated");
     }

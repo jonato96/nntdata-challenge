@@ -24,7 +24,7 @@ public class ReportService {
     private final TransactionService transactionService;
     private final TransactionMapper transactionMapper;
 
-    public List<ReportResponseDto> generateReport(Long clientId, LocalDate startDate, LocalDate endData) throws GeneralException {
+    public List<ReportResponseDto> generateReport(Long clientId, LocalDate startDate, LocalDate endData) {
 
         ClientResponseDto clientFind = customerClient.findById(clientId);
         if( !clientFind.isStatus() ) throw new GeneralException("Client is not active");

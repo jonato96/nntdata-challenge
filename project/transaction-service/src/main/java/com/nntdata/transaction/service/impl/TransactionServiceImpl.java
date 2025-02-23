@@ -29,7 +29,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public TransactionResponseDto save (TransactionDto transactionRequest) throws GeneralException {
+    public TransactionResponseDto save (TransactionDto transactionRequest) {
         Account accountForTx =  accountService.validateAccount(transactionRequest.getAccountId());
         validatePositiveNegativeValues(transactionRequest, accountForTx.getBalance());
 
@@ -46,7 +46,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public void delete(Long id) throws GeneralException {
+    public void delete(Long id) {
         validateExistsAndIsActive(id);
         Transaction txToDeactivate = transactionRepository.findById(id).orElse(new Transaction());
         Account accountToUpdate = txToDeactivate.getAccount();
@@ -57,7 +57,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(readOnly = true)
-    public TransactionResponseDto findById(Long id) throws GeneralException {
+    public TransactionResponseDto findById(Long id) {
         Optional<Transaction> movementFind = transactionRepository.findById(id);
         if (movementFind.isEmpty()) throw new GeneralException("Movement not found with id: " + id);
         return transactionMapper.toResponseDto(movementFind.get());
@@ -65,7 +65,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<TransactionResponseDto> findByAccount(String account) throws GeneralException {
+    public List<TransactionResponseDto> findByAccount(String account) {
         List<Transaction> transactionList = transactionRepository.findAllByAccount(account);
         if ( transactionList.isEmpty() ) throw new GeneralException("Transactions with account number: " + account + " not found");
         return transactionMapper.toListResponseDto(transactionList);
@@ -77,12 +77,12 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findByAccountIdAndDateBetween(accountId, start, end);
     }
 
-    private void validateExistsAndIsActive(Long id) throws GeneralException {
+    private void validateExistsAndIsActive(Long id) {
         boolean result = transactionRepository.existsByIdAndStatusTrue(id);
         if (!result) throw new GeneralException("Transaction not found with id: " + id + ", or is already inactive");
     }
 
-    private void validatePositiveNegativeValues(TransactionDto dto, BigDecimal actualBalance) throws GeneralException {
+    private void validatePositiveNegativeValues(TransactionDto dto, BigDecimal actualBalance) {
         String msg = "";
         if ( dto.getType().equals(TransactionType.DEBIT) && dto.getAmount().compareTo(BigDecimal.ZERO) > 0 )
             msg = "Debit only can be negative";

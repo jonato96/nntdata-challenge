@@ -3,7 +3,6 @@ package com.nntdata.transaction.controller;
 import com.nntdata.transaction.dto.ReportResponseDto;
 import com.nntdata.transaction.dto.TransactionDto;
 import com.nntdata.transaction.dto.TransactionResponseDto;
-import com.nntdata.transaction.exception.GeneralException;
 import com.nntdata.transaction.service.TransactionService;
 import com.nntdata.transaction.util.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -29,23 +28,23 @@ public class TransactionController {
     private final ReportService reportService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<TransactionResponseDto> findById(@PathVariable("id") Long id) throws GeneralException {
+    public ResponseEntity<TransactionResponseDto> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(transactionService.findById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<TransactionResponseDto>> findByAndAccount(
-            @RequestParam("accountNumber") String accountNumber) throws GeneralException {
+            @RequestParam("accountNumber") String accountNumber) {
         return ResponseEntity.ok(transactionService.findByAccount(accountNumber));
     }
 
     @PostMapping
-    public ResponseEntity<TransactionResponseDto> create(@RequestBody TransactionDto transactionDto) throws GeneralException {
+    public ResponseEntity<TransactionResponseDto> create(@RequestBody TransactionDto transactionDto) {
         return ResponseEntity.ok(transactionService.save(transactionDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deactivate(@PathVariable("id") Long id) throws GeneralException {
+    public ResponseEntity<String> deactivate(@PathVariable("id") Long id) {
         transactionService.delete(id);
         return ResponseEntity.ok("Transaction with id: " + id + " has been inactivated");
     }
@@ -54,7 +53,7 @@ public class TransactionController {
     public ResponseEntity<List<ReportResponseDto>> generateReport(
             @RequestParam("clientId") Long clientId,
             @RequestParam("startDate") LocalDate startDate,
-            @RequestParam("endDate") LocalDate endDate) throws GeneralException {
+            @RequestParam("endDate") LocalDate endDate) {
 
         return ResponseEntity.ok(reportService.generateReport(clientId, startDate, endDate));
 

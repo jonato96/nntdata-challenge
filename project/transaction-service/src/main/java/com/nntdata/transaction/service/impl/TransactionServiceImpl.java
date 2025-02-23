@@ -98,7 +98,7 @@ public class TransactionServiceImpl implements TransactionService {
                 && dto.getAmount().compareTo(BigDecimal.ZERO) == 0 )
             msg = "Transaction with zero amount is not valid.";
 
-        if ( dto.getType().equals(TransactionType.DEBIT) && actualBalance.compareTo(dto.getAmount().abs()) < 0 )
+        if ( dto.getType().equals(TransactionType.DEBIT) && actualBalance.compareTo(dto.getAmount()) < 0 )
             msg = "Account Balance is not sufficient.";
 
         if ( !msg.isEmpty() ) throw new GeneralException(msg);

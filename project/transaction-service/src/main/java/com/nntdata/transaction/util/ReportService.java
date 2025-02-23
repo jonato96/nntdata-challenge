@@ -7,8 +7,8 @@ import com.nntdata.transaction.entity.Transaction;
 import com.nntdata.common.exception.GeneralException;
 import com.nntdata.transaction.mapper.TransactionMapper;
 import com.nntdata.transaction.service.AccountService;
+import com.nntdata.transaction.service.ClientRequestProducer;
 import com.nntdata.transaction.service.TransactionService;
-import com.nntdata.transaction.service.impl.ClientRequestProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +24,18 @@ public class ReportService {
     private final TransactionService transactionService;
     private final TransactionMapper transactionMapper;
 
-    public List<ReportResponseDto> generateReport(Long clientId, LocalDate startDate, LocalDate endData) {
+    public List<ReportResponseDto> generateReport(Long clientId, LocalDate startDate, LocalDate endDate) {
+
+        if (endDate.isBefore(startDate)) throw new GeneralException("Range date is incorrect.");
 
         ClientResponseDto clientFind = clientRequestProducer.findClient(clientId);
-        if( !clientFind.isStatus() ) throw new GeneralException("Client is not active");
+        if( !clientFind.isStatus() ) throw new GeneralException("Client is not active.");
 
         List<Account> accounts = accountService.findByClientId(clientId);
+        if (accounts.isEmpty() ) throw new GeneralException("Client does not have any account.");
         return accounts.stream()
             .map(account -> {
-                List<Transaction> transactions = transactionService.findByAccountAndDates(account.getId(), startDate, endData);
+                List<Transaction> transactions = transactionService.findByAccountAndDates(account.getId(), startDate, endDate);
                 return  ReportResponseDto.builder()
                         .client(clientFind.getName())
                         .accountNumber(account.getAccountNumber())

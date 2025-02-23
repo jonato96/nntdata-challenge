@@ -17,10 +17,8 @@ public class ClientResponseCustomer {
     private final ClientRepository clientRepository;
     private final ClientMapper clientMapper;
 
-
     @RabbitListener(queues = RabbitMQConfig.QUEUE_CLIENT)
     public ClientResponseDto findClient(Long clientId) {
-
         Client clientFind = clientRepository.findById(clientId)
                 .orElseThrow( () -> new GeneralException("Client not found with id: " + clientId));
         return clientMapper.toClientDto(clientFind);

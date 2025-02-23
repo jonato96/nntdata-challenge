@@ -5,9 +5,9 @@ spring:
   application:
     name: ms-client
   datasource:
-    url: jdbc:postgresql://localhost:5432/challenge
+    url: jdbc:postgresql://pg-db:5432/challenge
     username: postgres
-    password: admin
+    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
@@ -15,7 +15,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
   rabbitmq:
-    host: localhost
+    host: rabbitmq
     port: 5672
     username: guest
     password: guest

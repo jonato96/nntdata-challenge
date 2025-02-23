@@ -44,6 +44,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         validateExistsAndIsActive(id);
         accountRepository.inactivateAccount(id);

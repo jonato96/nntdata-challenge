@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -64,9 +63,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional(readOnly = true)
     public TransactionResponseDto findById(Long id) {
-        Optional<Transaction> movementFind = transactionRepository.findById(id);
-        if (movementFind.isEmpty()) throw new GeneralException("Movement not found with id: " + id);
-        return transactionMapper.toResponseDto(movementFind.get());
+        Transaction movementFind = transactionRepository.findById(id)
+                .orElseThrow( () -> new GeneralException("Movement not found with id: " + id));
+        return transactionMapper.toResponseDto(movementFind);
     }
 
     @Override

@@ -31,9 +31,15 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public TransactionResponseDto save (TransactionDto transactionRequest) {
         Account accountForTx =  accountService.validateAccount(transactionRequest.getAccountId());
-        validatePositiveNegativeValues(transactionRequest, accountForTx.getBalance());
+        validateValue(transactionRequest, accountForTx.getBalance());
 
-        BigDecimal actualBalance = accountForTx.getBalance().add(transactionRequest.getAmount());
+        BigDecimal actualBalance = BigDecimal.ZERO;
+        if ( transactionRequest.getType() == TransactionType.CREDIT ) {
+            actualBalance = accountForTx.getBalance().add(transactionRequest.getAmount());
+        } else {
+            actualBalance = accountForTx.getBalance().subtract(transactionRequest.getAmount());
+        }
+
         Transaction transaction = transactionMapper.toTransaction(transactionRequest);
         transaction.setStatus(true);
         transaction.setBeforeBalance(accountForTx.getBalance());
@@ -82,20 +88,18 @@ public class TransactionServiceImpl implements TransactionService {
         if (!result) throw new GeneralException("Transaction not found with id: " + id + ", or is already inactive");
     }
 
-    private void validatePositiveNegativeValues(TransactionDto dto, BigDecimal actualBalance) {
+    private void validateValue(TransactionDto dto, BigDecimal actualBalance) {
         String msg = "";
-        if ( dto.getType().equals(TransactionType.DEBIT) && dto.getAmount().compareTo(BigDecimal.ZERO) > 0 )
-            msg = "Debit only can be negative";
 
-        if ( dto.getType().equals(TransactionType.CREDIT) && dto.getAmount().compareTo(BigDecimal.ZERO) < 0 )
-            msg = "Credit only can be positive";
+        if ( dto.getAmount().compareTo(BigDecimal.ZERO) < 0 )
+            msg = "Transactions only support unsigned numbers.";
 
         if ( (dto.getType().equals(TransactionType.DEBIT) || dto.getType().equals(TransactionType.CREDIT))
                 && dto.getAmount().compareTo(BigDecimal.ZERO) == 0 )
-            msg = "Transaction with zero amount is not valid";
+            msg = "Transaction with zero amount is not valid.";
 
         if ( dto.getType().equals(TransactionType.DEBIT) && actualBalance.compareTo(dto.getAmount().abs()) < 0 )
-            msg = "Account Balance is not sufficient";
+            msg = "Account Balance is not sufficient.";
 
         if ( !msg.isEmpty() ) throw new GeneralException(msg);
     }

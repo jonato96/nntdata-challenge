@@ -1,6 +1,5 @@
 package com.nntdata.transaction.service.impl;
 
-import com.nntdata.transaction.client.CustomerClient;
 import com.nntdata.transaction.dto.AccountDto;
 import com.nntdata.transaction.dto.AccountResponseDto;
 import com.nntdata.transaction.dto.client.ClientResponseDto;
@@ -20,13 +19,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    private final CustomerClient customerClient;
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
+    private final ClientRequestProducer clientRequestProducer;
 
     @Override
     public AccountResponseDto save(AccountDto requestAccount) {
-        ClientResponseDto clientForAccount = customerClient.findById(requestAccount.getClientId());
+        ClientResponseDto clientForAccount = clientRequestProducer.findClient(requestAccount.getClientId());
         if ( accountRepository.existsByAccountNumber(requestAccount.getAccountNumber()) )
             throw new GeneralException("Account number is not valid.");
         Account accountToSave = accountMapper.toAccount(requestAccount);
@@ -53,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(readOnly = true)
     public AccountResponseDto findById(Long id) {
         Account accountFind = accountRepository.findById(id).orElseThrow( () -> new GeneralException("Account not found with id: " + id) );
-        ClientResponseDto clientResponse = customerClient.findById(accountFind.getClientId());
+        ClientResponseDto clientResponse = clientRequestProducer.findClient(accountFind.getClientId());
         AccountResponseDto accountResponse = accountMapper.toResponseDto(accountFind);
         accountResponse.setClientName(clientResponse.getName());
         return accountResponse;

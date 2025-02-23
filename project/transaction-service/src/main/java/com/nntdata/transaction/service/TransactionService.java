@@ -3,7 +3,7 @@ package com.nntdata.transaction.service;
 import com.nntdata.transaction.dto.TransactionDto;
 import com.nntdata.transaction.dto.TransactionResponseDto;
 import com.nntdata.transaction.entity.Transaction;
-import com.nntdata.transaction.exception.GeneralException;
+import com.nntdata.common.exception.GeneralException;
 
 import java.time.LocalDate;
 import java.util.List;

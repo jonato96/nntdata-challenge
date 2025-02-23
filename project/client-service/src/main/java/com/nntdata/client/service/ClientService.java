@@ -3,7 +3,7 @@ package com.nntdata.client.service;
 import com.nntdata.client.dto.ClientDto;
 import com.nntdata.client.dto.ClientResponseDto;
 import com.nntdata.client.entity.Client;
-import com.nntdata.client.exception.GeneralException;
+import com.nntdata.common.exception.GeneralException;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package com.nntdata.client.controller;
 
 import com.nntdata.client.dto.ClientDto;
 import com.nntdata.client.dto.ClientResponseDto;
-import com.nntdata.client.exception.GeneralException;
 import com.nntdata.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,27 +24,27 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping
-    public ResponseEntity<List<ClientResponseDto>> findAll() throws GeneralException {
+    public ResponseEntity<List<ClientResponseDto>> findAll() {
         return ResponseEntity.ok(clientService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientResponseDto> findById(@PathVariable("id") Long id) throws GeneralException {
+    public ResponseEntity<ClientResponseDto> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(clientService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<ClientResponseDto> create(@RequestBody ClientDto clientDto) throws GeneralException {
+    public ResponseEntity<ClientResponseDto> create(@RequestBody ClientDto clientDto) {
         return ResponseEntity.ok(clientService.save(clientDto));
     }
 
     @PutMapping
-    public ResponseEntity<ClientResponseDto> edit(@RequestBody ClientDto clientDto) throws GeneralException {
+    public ResponseEntity<ClientResponseDto> edit(@RequestBody ClientDto clientDto) {
         return ResponseEntity.ok(clientService.edit(clientDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deactivate(@PathVariable("id") Long id) throws GeneralException {
+    public ResponseEntity<String> deactivate(@PathVariable("id") Long id) {
         clientService.delete(id);
         return ResponseEntity.ok("Client with id: " + id + " has been inactivated");
     }

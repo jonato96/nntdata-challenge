@@ -1,6 +1,6 @@
-package com.nntdata.transaction.controller;
+package com.nntdata.common.controller;
 
-import com.nntdata.transaction.exception.GeneralException;
+import com.nntdata.common.exception.GeneralException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

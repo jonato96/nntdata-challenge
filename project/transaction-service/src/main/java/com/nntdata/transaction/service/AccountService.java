@@ -3,7 +3,7 @@ package com.nntdata.transaction.service;
 import com.nntdata.transaction.dto.AccountDto;
 import com.nntdata.transaction.dto.AccountResponseDto;
 import com.nntdata.transaction.entity.Account;
-import com.nntdata.transaction.exception.GeneralException;
+import com.nntdata.common.exception.GeneralException;
 
 import java.math.BigDecimal;
 import java.util.List;

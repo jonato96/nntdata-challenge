@@ -4,7 +4,7 @@ import com.nntdata.transaction.dto.AccountDto;
 import com.nntdata.transaction.dto.AccountResponseDto;
 import com.nntdata.transaction.dto.client.ClientResponseDto;
 import com.nntdata.transaction.entity.Account;
-import com.nntdata.transaction.exception.GeneralException;
+import com.nntdata.common.exception.GeneralException;
 import com.nntdata.transaction.mapper.AccountMapper;
 import com.nntdata.transaction.repository.AccountRepository;
 import com.nntdata.transaction.service.AccountService;

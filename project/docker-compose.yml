@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  ms-client:
+    build: client-service
+    ports:
+      - 8080:8080
+    depends_on:
+      pg-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+  ms-transaction:
+    build: transaction-service
+    ports:
+      - 8081:8081
+    depends_on:
+      pg-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+  pg-db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: challenge  
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 20s
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      retries: 5
+      start_period: 20s

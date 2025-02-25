@@ -1,11 +1,17 @@
 package com.nntdata.transaction.dto;
 
 import com.nntdata.transaction.helper.TransactionType;
-import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 public class TransactionDto {
 
     private TransactionType type;

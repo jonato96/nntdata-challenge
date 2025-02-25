@@ -1,12 +1,18 @@
 package com.nntdata.transaction.dto;
 
 import com.nntdata.transaction.helper.TransactionType;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class TransactionResponseDto {
 
     private Long id;

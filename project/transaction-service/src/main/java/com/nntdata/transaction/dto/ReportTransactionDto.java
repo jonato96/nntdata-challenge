@@ -1,14 +1,18 @@
 package com.nntdata.transaction.dto;
 
 import com.nntdata.transaction.helper.TransactionType;
-import lombok.Builder;
-import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Builder
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ReportTransactionDto {
 
     private LocalDate date;

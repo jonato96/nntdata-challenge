@@ -1,13 +1,17 @@
 package com.nntdata.transaction.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Builder
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ReportResponseDto {
 
     private String client;

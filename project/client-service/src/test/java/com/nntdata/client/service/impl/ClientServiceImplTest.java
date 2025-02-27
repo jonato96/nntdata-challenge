@@ -39,8 +39,7 @@ public class ClientServiceImplTest {
         clientFind.setId(id);
         when(clientRepository.findById(id)).thenReturn(Optional.of(clientFind));
 
-        ClientResponseDto mapped = new ClientResponseDto();
-        mapped.setId(clientFind.getId());
+        ClientResponseDto mapped = ClientResponseDto.builder().id(clientFind.getId()).build();
         when(clientMapper.toClientDto(clientFind)).thenReturn(mapped);
         // Act
         ClientResponseDto result = clientServiceImpl.findById(id);

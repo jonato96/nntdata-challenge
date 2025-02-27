@@ -13,7 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,10 +37,8 @@ public class TransactionServiceImpTest {
         transactionFind.setId(1L);
         when(transactionRepository.findById(id)).thenReturn(Optional.of(transactionFind));
 
-        TransactionResponseDto mapped = new TransactionResponseDto();
-        mapped.setId(1L);
+        TransactionResponseDto mapped = TransactionResponseDto.builder().id(1L).build();
         when(transactionMapper.toResponseDto(transactionFind)).thenReturn(mapped);
-
         // Act
         TransactionResponseDto result = transactionServiceImpl.findById(id);
         // Assert

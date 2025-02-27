@@ -1,14 +1,14 @@
 package com.nntdata.client.dto;
 
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
-@Setter
 public class ClientDto {
 
     private Long id;

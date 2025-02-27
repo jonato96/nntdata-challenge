@@ -42,13 +42,11 @@ public class AccountServiceImplTest {
         accountFind.setClientId(2L);
         when(accountRepository.findById(id)).thenReturn(Optional.of(accountFind));
 
-        ClientResponseDto clientResponseDto = new ClientResponseDto();
-        clientResponseDto.setName("Jhon Doe");
+        ClientResponseDto clientResponseDto = ClientResponseDto.builder().name("Jhon Doe").build();
         when(clientRequestProducer.findClient(accountFind.getClientId())).thenReturn(clientResponseDto);
 
-        AccountResponseDto mapped = new AccountResponseDto();
-        mapped.setId(accountFind.getId());
-        when(accountMapper.toResponseDto(accountFind)).thenReturn(mapped);
+        AccountResponseDto mapped = AccountResponseDto.builder().id(accountFind.getId()).build();
+        when(accountMapper.toResponseDto(accountFind, clientResponseDto.getName())).thenReturn(mapped);
         // Act
         AccountResponseDto result = accountServiceImpl.findById(id);
         // Assert

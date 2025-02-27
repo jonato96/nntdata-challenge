@@ -1,16 +1,16 @@
 package com.nntdata.transaction.dto.client;
 
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
+@Builder
 public class ClientResponseDto implements Serializable {
 
     private Long id;

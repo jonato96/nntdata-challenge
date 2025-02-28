@@ -10,16 +10,16 @@ import java.util.List;
 @Component
 public class ClientMapper {
     public ClientResponseDto toClientDto(Client client){
-        return ClientResponseDto.builder()
-                .id(client.getId())
-                .name(client.getName())
-                .gender(client.getGender())
-                .age(client.getAge())
-                .identification(client.getIdentification())
-                .address(client.getAddress())
-                .phone(client.getPhone())
-                .status(client.isStatus())
-                .build();
+        return new ClientResponseDto(
+                client.getId(),
+                client.getName(),
+                client.getGender(),
+                client.getAge(),
+                client.getIdentification(),
+                client.getAddress(),
+                client.getPhone(),
+                client.getStatus()
+        );
     }
 
     public List<ClientResponseDto> toClientDtoList(List<Client> clients) {
@@ -27,16 +27,18 @@ public class ClientMapper {
     }
 
     public Client toClient(ClientDto clientDto){
-        Client client = new Client();
-        client.setId(clientDto.getId());
-        client.setName(clientDto.getName());
-        client.setGender(clientDto.getGender());
-        client.setAge(clientDto.getAge());
-        client.setIdentification(clientDto.getIdentification());
-        client.setAddress(clientDto.getAddress());
-        client.setPassword(clientDto.getPassword());
-        client.setPhone(clientDto.getPhone());
-        return client;
+        return new Client(
+            clientDto.getId(),
+            clientDto.getName(),
+            clientDto.getGender(),
+            clientDto.getAge(),
+            clientDto.getIdentification(),
+            clientDto.getAddress(),
+            clientDto.getPassword(),
+            clientDto.getPhone(),
+            null
+        );
+
     }
 
 }

@@ -23,29 +23,21 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public ClientResponseDto save(ClientDto requestClient) {
-        try {
-            Client clientToCreate = clientMapper.toClient(requestClient);
-            clientToCreate.setStatus(true);
-            Client clientCreated = clientRepository.save(clientToCreate);
-            return clientMapper.toClientDto(clientCreated);
-        } catch (Exception ex){
-            throw new GeneralException(ex.getMessage());
-        }
+        Client clientToCreate = clientMapper.toClient(requestClient);
+        clientToCreate.setStatus(true);
+        Client clientCreated = clientRepository.save(clientToCreate);
+        return clientMapper.toClientDto(clientCreated);
     }
 
     @Override
     @Transactional
     public ClientResponseDto edit(ClientDto requestClient) {
-        try {
-            Client clientFind = clientRepository.findByIdAndStatusTrue(requestClient.getId())
-                    .orElseThrow( () -> new GeneralException("Client not found with id: " + requestClient.getId() + ", or is already inactive"));
-            Client clientToEdit = clientMapper.toClient(requestClient);
-            clientToEdit.setStatus(clientFind.isStatus());
-            Client clientCreated = clientRepository.save(clientToEdit);
-            return clientMapper.toClientDto(clientCreated);
-        } catch (Exception ex){
-            throw new GeneralException(ex.getMessage());
-        }
+        Client clientFind = clientRepository.findByIdAndStatusTrue(requestClient.getId())
+                .orElseThrow( () -> new GeneralException("Client not found with id: " + requestClient.getId() + ", or is already inactive"));
+        Client clientToEdit = clientMapper.toClient(requestClient);
+        clientToEdit.setStatus(clientFind.getStatus());
+        Client clientCreated = clientRepository.save(clientToEdit);
+        return clientMapper.toClientDto(clientCreated);
     }
 
     @Override

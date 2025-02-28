@@ -33,9 +33,7 @@ public class AccountServiceImpl implements AccountService {
         accountToSave.setStatus(true);
         accountToSave.setClientId(clientForAccount.getId());
         Account accountCreated = accountRepository.save(accountToSave);
-        AccountResponseDto accountResponse = accountMapper.toResponseDto(accountCreated);
-        accountResponse.setClientName(clientForAccount.getName());
-        return accountResponse;
+        return accountMapper.toResponseDto(accountCreated, clientForAccount.getName());
     }
 
     @Override
@@ -55,9 +53,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountResponseDto findById(Long id) {
         Account accountFind = accountRepository.findById(id).orElseThrow( () -> new GeneralException("Account not found with id: " + id) );
         ClientResponseDto clientResponse = clientRequestProducer.findClient(accountFind.getClientId());
-        AccountResponseDto accountResponse = accountMapper.toResponseDto(accountFind);
-        accountResponse.setClientName(clientResponse.getName());
-        return accountResponse;
+        return accountMapper.toResponseDto(accountFind, clientResponse.getName());
     }
 
     @Override

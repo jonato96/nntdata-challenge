@@ -26,7 +26,7 @@ public class ReportService {
 
     public List<ReportResponseDto> generateReport(Long clientId, LocalDate startDate, LocalDate endDate) {
 
-        if (endDate.isBefore(startDate)) throw new GeneralException("Range date is incorrect.");
+        if ( endDate.isBefore(startDate) ) throw new GeneralException("Range date is incorrect.");
 
         ClientResponseDto clientFind = clientRequestProducer.findClient(clientId);
         if( !clientFind.isStatus() ) throw new GeneralException("Client is not active.");
@@ -36,13 +36,12 @@ public class ReportService {
         return accounts.stream()
             .map(account -> {
                 List<Transaction> transactions = transactionService.findByAccountAndDates(account.getId(), startDate, endDate);
-                return  ReportResponseDto.builder()
-                        .client(clientFind.getName())
-                        .accountNumber(account.getAccountNumber())
-                        .accountType(account.getType().toString())
-                        .balance(account.getBalance())
-                        .transactionDtoList( transactionMapper.toReportDto(transactions) )
-                        .build();
+                return new ReportResponseDto(
+                        clientFind.getName(),
+                        account.getAccountNumber(),
+                        account.getType().toString(),
+                        account.getBalance(),
+                        transactionMapper.toReportDto(transactions) );
             })
             .toList();
 

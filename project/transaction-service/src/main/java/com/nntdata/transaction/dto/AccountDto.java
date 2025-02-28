@@ -1,11 +1,17 @@
 package com.nntdata.transaction.dto;
 
 import com.nntdata.transaction.helper.AccountType;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Builder
 public class AccountDto {
 
     private Long id;
